@@ -39,65 +39,77 @@ export interface IReportRepo {
 class ReportRepo implements IReportRepo {
   // Account
   async getAccountList(params: ReportAccountListRequestModel): Promise<BaseApiResponseModel<ReportAccountListResponseModel[]>> {
-    return client.get(ApiPath.GET_REPORTED_ACCOUNT_LIST, params);
+    return client.get(ApiPath.GET_REPORTED_LIST, { params: { ...params, type: 0 } });
   }
 
   async getAccountDetail(params: ReportAccountDetailRequestModel): Promise<BaseApiResponseModel<ReportAccountListResponseModel>> {
-    return client.get(`${ApiPath.GET_REPORTED_ACCOUNT_DETAIL}/${params.user_id}/${params.reported_user_id}`);
+    const path = `${ApiPath.GET_REPORTED_DETAIL}${params.reported_user_id}`;
+    return client.get(path, { params: { ...params, type: 0 } });
   }
 
   async deleteAccountReport(params: ReportAccountDetailRequestModel): Promise<BaseApiResponseModel<ReportAccountListResponseModel>> {
-    return client.delete(`${ApiPath.GET_REPORTED_ACCOUNT_DETAIL}/${params.user_id}/${params.reported_user_id}`);
+    const path = `${ApiPath.DELETE_REPORTED}${params.reported_user_id}`;
+    return client.delete(path, { data: { ...params, type: 0 } });
   }
 
   async acceptAccountReport(params: ReportAccountDetailRequestModel): Promise<BaseApiResponseModel<ReportAccountListResponseModel>> {
-    return client.patch(`${ApiPath.GET_REPORTED_ACCOUNT_DETAIL}/${params.user_id}/${params.reported_user_id}`);
+    const path = `${ApiPath.HANDLE_REPORTED}${params.reported_user_id}`;
+    return client.patch(path, { ...params, type: 0 });
   }
 
   async activateAccountReport(params: ReportAccountDetailRequestModel): Promise<BaseApiResponseModel<ReportAccountListResponseModel>> {
-    return client.patch(`${ApiPath.ACTIVATE_REPORTED_USER}/${params.reported_user_id}`); // Sử dụng reported_user_id thay vì user_id
+    const path = `${ApiPath.ACIVATE_REPORTED}${params.reported_user_id}`;
+    return client.patch(path, { ...params, type: 0 });
   }
 
   // Comment
   async getCommentList(params: ReportCommentListRequestModel): Promise<BaseApiResponseModel<ReportCommentListResponseModel[]>> {
-    return client.get(ApiPath.GET_REPORTED_COMMENT_LIST, params);
+    return client.get(ApiPath.GET_REPORTED_LIST, { params: { ...params, type: 2 } });
   }
 
   async getCommentDetail(params: ReportCommentDetailRequestModel): Promise<BaseApiResponseModel<ReportCommentListResponseModel>> {
-    return client.get(`${ApiPath.GET_REPORTED_COMMENT_DETAIL}/${params.user_id}/${params.reported_comment_id}`);
+    const path = `${ApiPath.GET_REPORTED_DETAIL}${params.reported_comment_id}`;
+    return client.get(path, { params: { ...params, type: 2 } });
   }
 
   async deleteCommentReport(params: ReportCommentDetailRequestModel): Promise<BaseApiResponseModel<ReportCommentListResponseModel>> {
-    return client.delete(`${ApiPath.GET_REPORTED_COMMENT_DETAIL}/${params.user_id}/${params.reported_comment_id}`);
+    const path = `${ApiPath.DELETE_REPORTED}${params.reported_comment_id}`;
+    return client.delete(path, { data: { ...params, type: 2 } });
   }
 
   async acceptCommentReport(params: ReportCommentDetailRequestModel): Promise<BaseApiResponseModel<ReportCommentListResponseModel>> {
-    return client.patch(`${ApiPath.GET_REPORTED_COMMENT_DETAIL}/${params.user_id}/${params.reported_comment_id}`);
+    const path = `${ApiPath.HANDLE_REPORTED}${params.reported_comment_id}`;
+    return client.patch(path, { ...params, type: 2 });
   }
 
   async activateCommentReport(params: ReportCommentDetailRequestModel): Promise<BaseApiResponseModel<ReportCommentListResponseModel>> {
-    return client.patch(`${ApiPath.ACTIVATE_REPORTED_COMMENT}/${params.reported_comment_id}`);
+    const path = `${ApiPath.ACIVATE_REPORTED}${params.reported_comment_id}`;
+    return client.patch(path, { ...params, type: 2 });
   }
 
   // Post
   async getPostList(params: ReportPostListRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel[]>> {
-    return client.get(ApiPath.GET_REPORTED_POSTS_LIST, params);
+    return client.get(ApiPath.GET_REPORTED_LIST, { params: { ...params, type: 1 } });
   }
 
   async getPostDetail(params: ReportPostDetailRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel>> {
-    return client.get(`${ApiPath.GET_REPORTED_POST_DETAIL}/${params.user_id}/${params.reported_post_id}`);
+    const path = `${ApiPath.GET_REPORTED_DETAIL}${params.reported_post_id}`;
+    return client.get(path, { params: { ...params, type: 1 } });
   }
 
   async deletePostReport(params: ReportPostDetailRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel>> {
-    return client.delete(`${ApiPath.GET_REPORTED_POST_DETAIL}/${params.user_id}/${params.reported_post_id}`);
+    const path = `${ApiPath.DELETE_REPORTED}${params.reported_post_id}`;
+    return client.delete(path, { data: { ...params, type: 1 } });
   }
 
   async acceptPostReport(params: ReportPostDetailRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel>> {
-    return client.patch(`${ApiPath.GET_REPORTED_POST_DETAIL}/${params.user_id}/${params.reported_post_id}`);
+    const path = `${ApiPath.HANDLE_REPORTED}${params.reported_post_id}`;
+    return client.patch(path, { ...params, type: 1 });
   }
 
   async activatePostReport(params: ReportPostDetailRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel>> {
-    return client.patch(`${ApiPath.ACTIVATE_REPORTED_POST}/${params.reported_post_id}`);
+    const path = `${ApiPath.ACIVATE_REPORTED}${params.reported_post_id}`;
+    return client.patch(path, { ...params, type: 1 });
   }
 }
 

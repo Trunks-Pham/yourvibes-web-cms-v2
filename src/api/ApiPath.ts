@@ -13,36 +13,11 @@ export const ApiPath = {
   RESET_PASSWORD: getApiPath("admins/super_admin/forgot_admin_password"),
 
   // //REPORT ACCOUNT
-  // GET_REPORTED_ACCOUNT_LIST: getApiPath("users/report"),
-  // GET_REPORTED_ACCOUNT_DETAIL: getApiPath("users/report"),
-  // ACIVATE_REPORTED_USER: getApiPath("users/report/activate"),
-
-  // //REPORT POST
-  // GET_REPORTED_POSTS_LIST: getApiPath("posts/report"),
-  // GET_REPORTED_POST_DETAIL: getApiPath("posts/report"),
-  // ACIVATE_REPORTED_POST: getApiPath("posts/report/activate"),
-
-  // //REPORT COMMENT
-  // GET_REPORTED_COMMENT_LIST: getApiPath("comments/report"),
-  // GET_REPORTED_COMMENT_DETAIL: getApiPath("comments/report"),
-  // ACIVATE_REPORTED_COMMENT: getApiPath("comments/report/activate"),
-
-  //=======================================================================================================
-  // Account (Type 0)
-  GET_REPORTED_ACCOUNT_LIST: getApiPath("report/account/list"),
-  GET_REPORTED_ACCOUNT_DETAIL: getApiPath("report/account/detail"),
-  ACTIVATE_REPORTED_USER: getApiPath("report/account/activate"),
-
-  // Post (Type 1)
-  GET_REPORTED_POSTS_LIST: getApiPath("report/post/list"),
-  GET_REPORTED_POST_DETAIL: getApiPath("report/post/detail"),
-  ACTIVATE_REPORTED_POST: getApiPath("report/post/activate"),
-
-  // Comment (Type 2)
-  GET_REPORTED_COMMENT_LIST: getApiPath("report/comment/list"),
-  GET_REPORTED_COMMENT_DETAIL: getApiPath("report/comment/detail"),
-  ACTIVATE_REPORTED_COMMENT: getApiPath("report/comment/activate"),
-  //=======================================================================================================
+  GET_REPORTED_LIST: getApiPath("report"), //get a list of reported
+  GET_REPORTED_DETAIL: getApiPath("report/"), //get reported detail
+  ACIVATE_REPORTED: getApiPath("report/activate/"),//activate user account
+  HANDLE_REPORTED: getApiPath("report/handle_report/"),//handle reported
+  DELETE_REPORTED: getApiPath("report/"), //delete reported
 
   //ADS TRANSACTIONS
   GET_ADS_TRANSACTION_LIST: getApiPath("advertise/admin"),
