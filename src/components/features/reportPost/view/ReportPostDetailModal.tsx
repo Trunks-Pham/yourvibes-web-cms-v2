@@ -1,3 +1,4 @@
+"use client";  
 import { ReportPostDetailRequestModel, ReportPostListResponseModel } from '@/api/features/report/model/ReportModel';
 import Post from '@/components/common/Post';
 import useColor from '@/global/hooks/useColor';
@@ -54,11 +55,10 @@ const ReportPostDetailModal = ({
   };
 
   const handleAction = (action: (params: ReportPostDetailRequestModel) => Promise<void>) => {
-    if (detail?.user_id && detail?.reported_post_id) {
+    if (detail?.report_id) {
       action({
-        type: 1,
-        user_id: detail.user_id,
-        reported_post_id: detail.reported_post_id,
+        report_type: 1,  
+        report_id: detail.report_id,
       });
     }
   };
@@ -87,7 +87,7 @@ const ReportPostDetailModal = ({
             statusConst.find((item) => item.value === detail?.status)?.label,
             statusConst.find((item) => item.value === detail?.status)?.color
           )}
-          {renderItem("Tài khoản báo cáo", detail?.user_email)}
+          {renderItem("Tài khoản báo cáo", detail?.user?.email)}  
           {renderItem("Admin", detail?.admin?.email)}
           {renderItem("Lý do", detail?.reason)}
         </Col>

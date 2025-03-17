@@ -62,11 +62,10 @@ const ReportAccountDetailModal = ({
   };
 
   const handleAction = (action: (params: ReportAccountDetailRequestModel) => Promise<void>) => {
-    if (detail?.user_id && detail?.reported_user_id) {
+    if (detail?.report_id) {
       action({
-        type: 0,
-        user_id: detail.user_id,
-        reported_user_id: detail.reported_user_id,
+        report_type: 0,
+        report_id: detail.report_id,
       });
     }
   };

@@ -11,7 +11,7 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [query, setQuery] = useState<ReportCommentListRequestModel>({
-    type: 2,
+    report_type: 2,  
     page: 1,
     limit: 10,
     from_date: dayjs().startOf('month').format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -69,7 +69,7 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
   const getReportDetail = async (params: ReportCommentDetailRequestModel) => {
     try {
       setDetailLoading(true);
-      const res = await repo.getCommentDetail(params);
+      const res = await repo.getCommentDetail({ report_type: 2, report_id: params.report_id });
       setDetail(res?.data ?? undefined);
     } catch (error) {
       console.error(error);
@@ -85,7 +85,7 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
   const deleteReport = async (params: ReportCommentDetailRequestModel) => {
     try {
       setDeleteLoading(true);
-      const res = await repo.deleteCommentReport(params);
+      const res = await repo.deleteCommentReport({ report_type: 2, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -108,7 +108,7 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
   const acceptReport = async (params: ReportCommentDetailRequestModel) => {
     try {
       setAcceptLoading(true);
-      const res = await repo.acceptCommentReport(params);
+      const res = await repo.acceptCommentReport({ report_type: 2, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -131,7 +131,7 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
   const activateReport = async (params: ReportCommentDetailRequestModel) => {
     try {
       setActiveLoading(true);
-      const res = await repo.activateCommentReport(params);
+      const res = await repo.activateCommentReport({ report_type: 2, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -156,11 +156,10 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
   }, [query]);
 
   useEffect(() => {
-    if (detailModal && selectedRecord?.reported_comment_id) {
+    if (detailModal && selectedRecord?.report_id) {
       getReportDetail({
-        type: 2,
-        user_id: selectedRecord.user_id,
-        reported_comment_id: selectedRecord.reported_comment_id,
+        report_type: 2,
+        report_id: selectedRecord.report_id,
       });
     }
   }, [detailModal, selectedRecord]);

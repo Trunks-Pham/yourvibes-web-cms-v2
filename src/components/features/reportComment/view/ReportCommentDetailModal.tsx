@@ -1,4 +1,5 @@
-import { ReportCommentListResponseModel, ReportCommentDetailRequestModel } from '@/api/features/report/model/ReportModel';
+"use client";
+import { ReportCommentDetailRequestModel, ReportCommentListResponseModel } from '@/api/features/report/model/ReportModel';
 import Comment from '@/components/common/Comment';
 import Post from '@/components/common/Post';
 import useColor from '@/global/hooks/useColor';
@@ -55,11 +56,10 @@ const ReportCommentDetailModal = ({
   };
 
   const handleAction = (action: (params: ReportCommentDetailRequestModel) => Promise<void>) => {
-    if (detail?.user_id && detail?.reported_comment_id) {
+    if (detail?.report_id) {
       action({
-        type: 2,
-        user_id: detail.user_id,
-        reported_comment_id: detail.reported_comment_id,
+        report_type: 2, 
+        report_id: detail.report_id,
       });
     }
   };
@@ -88,7 +88,7 @@ const ReportCommentDetailModal = ({
             statusConst.find((item) => item.value === detail?.status)?.label,
             statusConst.find((item) => item.value === detail?.status)?.color
           )}
-          {renderItem("Tài khoản báo cáo", detail?.user?.email)} {/* Sửa từ user_email thành user?.email */}
+          {renderItem("Tài khoản báo cáo", detail?.user?.email)}
           {renderItem("Admin", detail?.admin?.email)}
           {renderItem("Lý do", detail?.reason)}
           <div className="font-bold w-full my-2 text-lg">Bình luận</div>

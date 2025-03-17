@@ -53,7 +53,7 @@ const ReportCommentFeature = () => {
         className="w-full"
         onFinish={(values) => {
           setQuery({
-            type: 2,
+            report_type: 2,
             status: values?.status !== "" ? values?.status : undefined,
             from_date: dayjs(values?.date[0]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
             to_date: dayjs(values.date[1]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -113,7 +113,7 @@ const ReportCommentFeature = () => {
           },
           {
             title: "Email báo cáo",
-            dataIndex: ["user", "email"], // Sửa lại để truy cập email từ user
+            dataIndex: ["user", "email"],
             align: "center",
           },
           {
@@ -159,7 +159,7 @@ const ReportCommentFeature = () => {
           },
         ]}
         dataSource={reportedList}
-        rowKey={(record) => `${record.reported_comment_id || record.created_at}`}
+        rowKey={(record) => record.report_id ?? `${record.reported_comment_id || record.created_at}`}
         pagination={{
           showSizeChanger: true,
           pageSizeOptions: [10, 20, 50, 100],

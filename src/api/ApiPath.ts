@@ -13,11 +13,11 @@ export const ApiPath = {
   RESET_PASSWORD: getApiPath("admins/super_admin/forgot_admin_password"),
 
   // //REPORT ACCOUNT
-  GET_REPORTED_LIST: getApiPath("report"), //get a list of reported
-  GET_REPORTED_DETAIL: getApiPath("report/"), //get reported detail
-  ACIVATE_REPORTED: getApiPath("report/activate/"),//activate user account
-  HANDLE_REPORTED: getApiPath("report/handle_report/"),//handle reported
-  DELETE_REPORTED: getApiPath("report/"), //delete reported
+  GET_REPORTED_LIST: getApiPath("report/"),  
+  GET_REPORTED_DETAIL: getApiPath("report/{report_id}"),  
+  ACIVATE_REPORTED: getApiPath("report/activate/"), 
+  HANDLE_REPORTED: getApiPath("report/handle_report/"), 
+  DELETE_REPORTED: getApiPath("report/"), 
 
   //ADS TRANSACTIONS
   GET_ADS_TRANSACTION_LIST: getApiPath("advertise/admin"),

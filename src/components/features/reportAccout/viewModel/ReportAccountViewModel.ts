@@ -11,7 +11,7 @@ const ReportAccountViewModel = (repo: IReportRepo) => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [query, setQuery] = useState<ReportAccountListRequestModel>({
-    type: 0,
+    report_type: 0,
     page: 1,
     limit: 10,
     from_date: dayjs().startOf('month').format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -69,7 +69,7 @@ const ReportAccountViewModel = (repo: IReportRepo) => {
   const getDetail = async (params: ReportAccountDetailRequestModel) => {
     try {
       setDetailLoading(true);
-      const res = await repo.getAccountDetail(params);
+      const res = await repo.getAccountDetail({ report_type: 0, report_id: params.report_id });
       setDetail(res?.data ?? undefined);
     } catch (error) {
       console.error(error);
@@ -85,7 +85,7 @@ const ReportAccountViewModel = (repo: IReportRepo) => {
   const deleteReport = async (params: ReportAccountDetailRequestModel) => {
     try {
       setDeleteLoading(true);
-      const res = await repo.deleteAccountReport(params);
+      const res = await repo.deleteAccountReport({ report_type: 0, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -108,7 +108,7 @@ const ReportAccountViewModel = (repo: IReportRepo) => {
   const acceptReport = async (params: ReportAccountDetailRequestModel) => {
     try {
       setAcceptLoading(true);
-      const res = await repo.acceptAccountReport(params);
+      const res = await repo.acceptAccountReport({ report_type: 0, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -131,7 +131,7 @@ const ReportAccountViewModel = (repo: IReportRepo) => {
   const activateReport = async (params: ReportAccountDetailRequestModel) => {
     try {
       setActiveLoading(true);
-      const res = await repo.activateAccountReport(params);
+      const res = await repo.activateAccountReport({ report_type: 0, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -156,11 +156,10 @@ const ReportAccountViewModel = (repo: IReportRepo) => {
   }, [query]);
 
   useEffect(() => {
-    if (detailModal && selectedRecord?.reported_user_id) {
+    if (detailModal && selectedRecord?.report_id) {
       getDetail({
-        type: 0,
-        user_id: selectedRecord.user_id,
-        reported_user_id: selectedRecord.reported_user_id,
+        report_type: 0,
+        report_id: selectedRecord.report_id,
       });
     }
   }, [detailModal, selectedRecord]);

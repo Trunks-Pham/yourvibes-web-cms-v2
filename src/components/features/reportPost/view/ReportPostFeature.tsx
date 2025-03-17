@@ -54,7 +54,7 @@ const ReportPostFeature = () => {
           className="w-full"
           onFinish={(values) => {
             setQuery({
-              type: 1,
+              report_type: 1,  
               status: values?.status !== "" ? values?.status : undefined,
               from_date: dayjs(values?.date[0]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
               to_date: dayjs(values.date[1]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -114,7 +114,7 @@ const ReportPostFeature = () => {
             },
             {
               title: "Email báo cáo",
-              dataIndex: "user_email",
+              dataIndex: ["user", "email"],  
               align: "center",
             },
             {
@@ -132,7 +132,7 @@ const ReportPostFeature = () => {
               align: "center",
             },
             {
-              title: "ID post bị báo cáo",
+              title: "ID bài viết bị báo cáo",
               dataIndex: "reported_post_id",
               align: "center",
             },
@@ -160,7 +160,7 @@ const ReportPostFeature = () => {
             },
           ]}
           dataSource={reportedList}
-          rowKey={(record) => `${record.reported_post_id || record.created_at}`} // Đảm bảo key duy nhất
+          rowKey={(record) => record.report_id ?? `${record.reported_post_id || record.created_at}`}  
           pagination={{
             showSizeChanger: true,
             pageSizeOptions: [10, 20, 50, 100],

@@ -7,7 +7,7 @@ import { CommentsResponseModel } from "../../post/models/CommentResponseModel";
 // =================================================================================================
 
 export interface ReportAccountListRequestModel {
-  type?: 0; // Thêm type để xác định loại báo cáo
+  report_type: 0; // Thêm type để xác định loại báo cáo
   status?: boolean;
   reason?: string;
   from_date?: string;
@@ -18,12 +18,12 @@ export interface ReportAccountListRequestModel {
   page?: number;
   reported_user_email?: string;
   admin_email?: string;
+  report_id?: string;
 }
 
-export interface ReportAccountDetailRequestModel {
-  type?: 0;
-  user_id?: string;
-  reported_user_id?: string;
+export interface ReportAccountDetailRequestModel { 
+  report_type: 0;  
+  report_id?: string;
 }
 
 export interface ReportAccountListResponseModel {
@@ -37,6 +37,7 @@ export interface ReportAccountListResponseModel {
   updated_at?: string;
   user?: UserModel;
   reported_user?: UserModel;
+  report_id?: string;
 }
 
 // =================================================================================================
@@ -44,7 +45,7 @@ export interface ReportAccountListResponseModel {
 // =================================================================================================
 
 export interface ReportPostListRequestModel {
-  type?: 1;
+  report_type: 1;
   status?: boolean;
   reason?: string;
   from_date?: string;
@@ -55,12 +56,12 @@ export interface ReportPostListRequestModel {
   page?: number;
   user_email?: string;
   admin_email?: string;
+  report_id?: string;
 }
 
 export interface ReportPostDetailRequestModel {
-  type?: 1;
-  user_id?: string;
-  reported_post_id?: string;
+  report_type: 1; 
+  report_id?: string;
 }
 
 export interface ReportPostListResponseModel {
@@ -75,6 +76,7 @@ export interface ReportPostListResponseModel {
   status?: boolean;
   created_at?: string;
   updated_at?: string;
+  report_id?: string;
 }
 
 // =================================================================================================
@@ -82,7 +84,7 @@ export interface ReportPostListResponseModel {
 // =================================================================================================
 
 export interface ReportCommentListRequestModel {
-  type?: 2;
+  report_type: 2;
   status?: boolean;
   reason?: string;
   from_date?: string;
@@ -93,12 +95,12 @@ export interface ReportCommentListRequestModel {
   page?: number;
   user_email?: string;
   admin_email?: string;
+  report_id?: string;
 }
 
 export interface ReportCommentDetailRequestModel {
-  type?: 2;
-  user_id?: string;
-  reported_comment_id?: string;
+  report_type: 2; 
+  report_id?: string;
 }
 
 export interface ReportCommentListResponseModel {
@@ -113,4 +115,5 @@ export interface ReportCommentListResponseModel {
   updated_at?: string;
   post?: PostResponseModel;
   reported_comment?: CommentsResponseModel;
+  report_id?: string;
 }

@@ -54,7 +54,7 @@ const ReportAccountFeature = () => {
           className="w-full"
           onFinish={(values) => {
             setQuery({
-              type: 0,
+              report_type: 0,
               status: values?.status !== "" ? values?.status : undefined,
               from_date: dayjs(values?.date[0]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
               to_date: dayjs(values.date[1]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -161,7 +161,7 @@ const ReportAccountFeature = () => {
           ]}
           dataSource={reportedList}
           onChange={handleTableChange}
-          rowKey={(record) => `${record.reported_user_id || record.created_at}`} // Sửa để đảm bảo key duy nhất
+          rowKey={(record) => record.report_id ?? `${record.reported_user_id || record.created_at}`} 
           pagination={{
             current: page,
             pageSize: limit,
