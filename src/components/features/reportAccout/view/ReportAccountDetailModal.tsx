@@ -1,10 +1,10 @@
-import { ReportAccountDetailRequestModel, ReportAccountListResponseModel } from '@/api/features/reportAccount/model/ReportAccountListModel'
-import useColor from '@/global/hooks/useColor'
-import { Button, Col, Modal, Row } from 'antd'
-import dayjs from 'dayjs'
-import React from 'react'
+import { ReportAccountDetailRequestModel, ReportAccountListResponseModel } from '@/api/features/report/model/ReportModel';
+import useColor from '@/global/hooks/useColor';
+import { Button, Col, Modal, Row } from 'antd';
+import dayjs from 'dayjs';
+import React from 'react';
 
-const ReportPostDetailModal = ({
+const ReportAccountDetailModal = ({
   open,
   onCancel,
   detail,
@@ -14,31 +14,27 @@ const ReportPostDetailModal = ({
   activeLoading,
   deleteReport,
   acceptReport,
-  activateReport
+  activateReport,
 }: {
-  open: boolean,
-  onCancel: () => void,
-  detail?: ReportAccountListResponseModel,
-  detailLoading: boolean,
-  deleteLoading: boolean,
-  acceptLoading: boolean,
-  activeLoading: boolean,
-  deleteReport: (params: ReportAccountDetailRequestModel) => Promise<void>,
-  acceptReport: (params: ReportAccountDetailRequestModel) => Promise<void>,
-  activateReport: (params: ReportAccountDetailRequestModel) => Promise<void>,
+  open: boolean;
+  onCancel: () => void;
+  detail?: ReportAccountListResponseModel;
+  detailLoading: boolean;
+  deleteLoading: boolean;
+  acceptLoading: boolean;
+  activeLoading: boolean;
+  deleteReport: (params: ReportAccountDetailRequestModel) => Promise<void>;
+  acceptReport: (params: ReportAccountDetailRequestModel) => Promise<void>;
+  activateReport: (params: ReportAccountDetailRequestModel) => Promise<void>;
 }) => {
   const { green } = useColor();
   const statusConst = [
     { label: "Tất cả", value: "", color: "" },
     { label: "Đã xử lý", value: true, color: green },
     { label: "Chưa xử lý", value: false, color: "red" },
-  ]
+  ];
 
-  const renderItem = (
-    label: string,
-    value: React.ReactNode,
-    color = "black"
-  ) => {
+  const renderItem = (label: string, value: React.ReactNode, color = "black") => {
     return (
       <div className="flex justify-between w-full my-2">
         <span className="font-bold">{label}:</span>
@@ -50,53 +46,48 @@ const ReportPostDetailModal = ({
           }}
           className="overflow-visible text-ellipsis"
         >
-          <>
-            {label?.includes("Tài khoản bị báo cáo") ? (
-              <a
-                href={`${process.env.NEXT_PUBLIC_CLIENT_ENDPOINT!}/user/${detail?.reported_user?.id}`}
-                target="_blank"
-              >
-                {value && value !== "-" && value !== "Invalid Date"
-                  ? value
-                  : "Không có thông tin"}
-              </a>
-            ) : (
-              <>
-                {value && value !== "-" && value !== "Invalid Date"
-                  ? value
-                  : "Không có thông tin"}
-              </>
-            )}
-          </>
+          {label?.includes("Tài khoản bị báo cáo") ? (
+            <a
+              href={`${process.env.NEXT_PUBLIC_CLIENT_ENDPOINT!}/user/${detail?.reported_user?.id}`}
+              target="_blank"
+            >
+              {value && value !== "-" && value !== "Invalid Date" ? value : "Không có thông tin"}
+            </a>
+          ) : (
+            <>{value && value !== "-" && value !== "Invalid Date" ? value : "Không có thông tin"}</>
+          )}
         </span>
       </div>
     );
+  };
+
+  const handleAction = (action: (params: ReportAccountDetailRequestModel) => Promise<void>) => {
+    if (detail?.report_id) {
+      action({
+        report_type: 0,
+        report_id: detail.report_id,
+      });
+    }
   };
 
   return (
     <Modal
       open={open}
       onCancel={onCancel}
-      title={<span className='font-bold text-xl'>Chi tiết báo cáo</span>}
+      title={<span className="font-bold text-xl">Chi tiết báo cáo tài khoản</span>}
       width={600}
       centered
       footer={null}
       maskClosable={false}
       loading={detailLoading}
     >
-      <Row gutter={[8, 32]} justify={"space-between"} className="mt-4 mb-10">
+      <Row gutter={[8, 32]} justify="space-between" className="mt-4 mb-10">
         <Col xs={24}>
-          {renderItem(
-            "Thời gian tạo",
-            dayjs(detail?.created_at).format("DD/MM/YYYY HH:mm:ss")
-          )}
-          {renderItem(
-            "Tài khoản bị báo cáo",
-            detail?.reported_user?.email
-          )}
+          {renderItem("Thời gian tạo", dayjs(detail?.created_at).format("DD/MM/YYYY HH:mm:ss"))}
+          {renderItem("Tài khoản bị báo cáo", detail?.reported_user?.email)}
           {renderItem(
             "Trạng thái tài khoản bị báo cáo",
-            detail?.reported_user?.status ? "Hoạt động" : "Khóa",
+            detail?.reported_user?.status ? "Hoạt động" : "Khóa",
             detail?.reported_user?.status ? "green" : "red"
           )}
           {renderItem(
@@ -104,32 +95,21 @@ const ReportPostDetailModal = ({
             statusConst.find((item) => item.value === detail?.status)?.label,
             statusConst.find((item) => item.value === detail?.status)?.color
           )}
-          {renderItem(
-            "Tài khoản báo cáo",
-            detail?.user?.email
-          )}
-          {renderItem(
-            "Admin",
-            detail?.admin?.email
-          )}
-          {renderItem(
-            "Lý do",
-            detail?.reason
-          )}
+          {renderItem("Tài khoản báo cáo", detail?.user?.email)}
+          {renderItem("Admin", detail?.admin?.email)}
+          {renderItem("Lý do", detail?.reason)}
         </Col>
       </Row>
-      <Row gutter={[8, 32]} justify={"space-between"}>
+      <Row gutter={[8, 32]} justify="space-between">
         {detail?.status === true ? (
           <>
-            {!detail?.reported_user?.status && (
+            {detail?.reported_user?.status === false && (
               <Col xs={24}>
                 <Button
-                  type='primary'
-                  className='w-full'
+                  type="primary"
+                  className="w-full"
                   loading={activeLoading}
-                  onClick={() => activateReport({
-                    user_id: detail?.reported_user_id
-                  })}
+                  onClick={() => handleAction(activateReport)}
                 >
                   Mở lại tài khoản
                 </Button>
@@ -140,36 +120,30 @@ const ReportPostDetailModal = ({
           <>
             <Col xs={12}>
               <Button
-                type='primary'
+                type="primary"
                 ghost
-                className='w-full'
+                className="w-full"
                 loading={deleteLoading}
-                onClick={() => deleteReport({
-                  user_id: detail?.user_id,
-                  reported_user_id: detail?.reported_user_id
-                })}
+                onClick={() => handleAction(deleteReport)}
               >
                 Từ chối
               </Button>
             </Col>
             <Col xs={12}>
               <Button
-                type='primary'
-                className='w-full'
+                type="primary"
+                className="w-full"
                 loading={acceptLoading}
-                onClick={() => acceptReport({
-                  user_id: detail?.user_id,
-                  reported_user_id: detail?.reported_user_id
-                })}
+                onClick={() => handleAction(acceptReport)}
               >
                 Chấp nhận
               </Button>
             </Col>
           </>
         )}
-      </Row >
-    </Modal >
-  )
-}
+      </Row>
+    </Modal>
+  );
+};
 
-export default ReportPostDetailModal
+export default ReportAccountDetailModal;

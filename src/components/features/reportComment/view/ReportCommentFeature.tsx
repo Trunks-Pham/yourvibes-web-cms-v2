@@ -1,10 +1,10 @@
-"use client"
-import { defaultReportCommentRepo } from '@/api/features/reportComment/ReportCommentRepo';
+"use client";
+import { defaultReportRepo } from '@/api/features/report/ReportRepo';
 import CardFeature from '@/components/common/CardFeature';
 import useColor from '@/global/hooks/useColor';
 import { Form, Row, Col, Select, DatePicker, Button, Table, Input, App, ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { IoIosSearch } from 'react-icons/io';
 import { SiGoogledocs } from 'react-icons/si';
 import ReportCommentViewModel from '../viewModel/ReportCommentViewModel';
@@ -33,110 +33,70 @@ const ReportCommentFeature = () => {
     activeLoading,
     deleteReport,
     acceptReport,
-    activateReport
-  } = ReportCommentViewModel(defaultReportCommentRepo)
+    activateReport,
+  } = ReportCommentViewModel(defaultReportRepo);
 
   const statusConst = [
     { label: "Tất cả", value: "", color: "" },
     { label: "Đã xử lý", value: true, color: green },
     { label: "Chưa xử lý", value: false, color: "red" },
-  ]
+  ];
 
   useEffect(() => {
     messageDisplay(resultObject, message);
   }, [resultObject]);
 
   return (
-    <CardFeature
-      title='Báo cáo bình luận'
-    >
+    <CardFeature title="Báo cáo bình luận">
       <Form
-        layout='vertical'
-        className='w-full'
+        layout="vertical"
+        className="w-full"
         onFinish={(values) => {
           setQuery({
+            report_type: 2,
             status: values?.status !== "" ? values?.status : undefined,
             from_date: dayjs(values?.date[0]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
             to_date: dayjs(values.date[1]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
-            admin_email: values?.admin_email !== "" ? values?.admin_email : undefined,
-            user_email: values?.user_email !== "" ? values?.user_email : undefined,
+            admin_email: values?.admin_email || undefined,
+            user_email: values?.user_email || undefined,
             page: 1,
-            limit: 10
-          })
+            limit: 10,
+          });
         }}
       >
-        {/* filter */}
         <Row gutter={16}>
-          {/* status */}
           <Col xs={24} xl={6}>
-            <Form.Item
-              label={<span className='font-bold'>Trạng thái</span>}
-              name='status'
-              initialValue={""}
-            >
+            <Form.Item label={<span className="font-bold">Trạng thái</span>} name="status" initialValue="">
               <Select
-                placeholder='Trạng thái'
+                placeholder="Trạng thái"
                 options={statusConst.map((item) => ({ label: item.label, value: item.value }))}
               />
             </Form.Item>
           </Col>
-          {/* reporter's email */}
           <Col xs={24} xl={6}>
-            <Form.Item
-              label={<span className='font-bold'>Email báo cáo</span>}
-              name={"user_email"}
-            >
-              <Input
-                placeholder='Email báo cáo'
-                type='email'
-              />
+            <Form.Item label={<span className="font-bold">Email báo cáo</span>} name="user_email">
+              <Input placeholder="Email báo cáo" type="email" />
             </Form.Item>
           </Col>
-          {/* admin email */}
           <Col xs={24} xl={6}>
-            <Form.Item
-              label={<span className='font-bold'>Email admin</span>}
-              name={"admin_email"}
-            >
-              <Input
-                placeholder='Email admin'
-                type='email'
-              />
+            <Form.Item label={<span className="font-bold">Email admin</span>} name="admin_email">
+              <Input placeholder="Email admin" type="email" />
             </Form.Item>
           </Col>
-          {/* date */}
           <Col xs={24} xl={6}>
-            <ConfigProvider
-              theme={{
-                token: { colorPrimary: "#898989" },
-              }}
-            >
+            <ConfigProvider theme={{ token: { colorPrimary: "#898989" } }}>
               <Form.Item
-                label={<span className='font-bold'>Thời gian</span>}
-                name={'date'}
-                initialValue={[
-                  dayjs().startOf('month'),
-                  dayjs().endOf('month')
-                ]}
+                label={<span className="font-bold">Thời gian</span>}
+                name="date"
+                initialValue={[dayjs().startOf('month'), dayjs().endOf('month')]}
               >
-                <DatePicker.RangePicker
-                  style={{ width: '100%' }}
-                  format='DD/MM/YYYY'
-                  allowClear={false}
-                />
+                <DatePicker.RangePicker style={{ width: '100%' }} format="DD/MM/YYYY" allowClear={false} />
               </Form.Item>
             </ConfigProvider>
           </Col>
           <Col xs={24}>
-            <Form.Item
-            >
-              <Button
-                icon={<IoIosSearch />}
-                type='primary'
-                className='w-full'
-                htmlType='submit'
-                loading={isLoading}
-              >
+            <Form.Item>
+              <Button icon={<IoIosSearch />} type="primary" className="w-full" htmlType="submit" loading={isLoading}>
                 Tra cứu
               </Button>
             </Form.Item>
@@ -149,29 +109,29 @@ const ReportCommentFeature = () => {
             title: "STT",
             align: "center",
             render: (_, __, index) => page * limit - limit + index + 1,
-            width: "6%"
+            width: "6%",
           },
           {
             title: "Email báo cáo",
-            dataIndex: "user_email",
+            dataIndex: ["user", "email"],
             align: "center",
           },
           {
             title: "Trạng thái",
             dataIndex: "status",
             align: "center",
-            render: (value: string) => {
+            render: (value: boolean) => {
               const status = statusConst.find((item) => item.value === value);
-              return <span style={{ color: status?.color }} className='font-bold'>{status?.label}</span>;
-            }
+              return <span style={{ color: status?.color }} className="font-bold">{status?.label}</span>;
+            },
           },
           {
             title: "Admin",
-            dataIndex: "admin_email",
+            dataIndex: ["admin", "email"],
             align: "center",
           },
           {
-            title: "Comment bị báo cáo",
+            title: "ID bình luận bị báo cáo",
             dataIndex: "reported_comment_id",
             align: "center",
           },
@@ -184,24 +144,26 @@ const ReportCommentFeature = () => {
           {
             title: "Chi tiết",
             align: "center",
-            render: (_, record) => <Button
-              icon={<SiGoogledocs />}
-              shape='circle'
-              type='primary'
-              ghost
-              onClick={() => {
-                setSelectedRecord(record);
-                setDetailModal(true)
-              }}
-            />,
-          }
+            render: (_, record) => (
+              <Button
+                icon={<SiGoogledocs />}
+                shape="circle"
+                type="primary"
+                ghost
+                onClick={() => {
+                  setSelectedRecord(record);
+                  setDetailModal(true);
+                }}
+              />
+            ),
+          },
         ]}
         dataSource={reportedList}
-        rowKey={(record) => `${record.user_id}-${record.reported_comment_id}`}
+        rowKey={(record) => record.report_id ?? `${record.reported_comment_id || record.created_at}`}
         pagination={{
           showSizeChanger: true,
           pageSizeOptions: [10, 20, 50, 100],
-          showTotal: (total) => <div className='font-bold absolute left-0'>Tổng: {total}</div>,
+          showTotal: (total) => <div className="font-bold absolute left-0">Tổng: {total}</div>,
           current: page,
           pageSize: limit,
           total: total,
@@ -210,7 +172,7 @@ const ReportCommentFeature = () => {
         scroll={{ x: "max-content" }}
         loading={isLoading}
       />
-      {detailModal &&
+      {detailModal && (
         <ReportCommentDetailModal
           open={detailModal}
           onCancel={() => setDetailModal(false)}
@@ -223,9 +185,9 @@ const ReportCommentFeature = () => {
           acceptReport={acceptReport}
           activateReport={activateReport}
         />
-      }
+      )}
     </CardFeature>
-  )
-}
+  );
+};
 
-export default ReportCommentFeature
+export default ReportCommentFeature;

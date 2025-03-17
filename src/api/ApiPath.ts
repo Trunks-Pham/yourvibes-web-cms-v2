@@ -12,20 +12,12 @@ export const ApiPath = {
   UPDATE_ADMIN: getApiPath("admins/super_admin"),
   RESET_PASSWORD: getApiPath("admins/super_admin/forgot_admin_password"),
 
-  //REPORT ACCOUNT
-  GET_REPORTED_ACCOUNT_LIST: getApiPath("users/report"),
-  GET_REPORTED_ACCOUNT_DETAIL: getApiPath("users/report"),
-  ACIVATE_REPORTED_USER: getApiPath("users/report/activate"),
-
-  //REPORT POST
-  GET_REPORTED_POSTS_LIST: getApiPath("posts/report"),
-  GET_REPORTED_POST_DETAIL: getApiPath("posts/report"),
-  ACIVATE_REPORTED_POST: getApiPath("posts/report/activate"),
-
-  //REPORT COMMENT
-  GET_REPORTED_COMMENT_LIST: getApiPath("comments/report"),
-  GET_REPORTED_COMMENT_DETAIL: getApiPath("comments/report"),
-  ACIVATE_REPORTED_COMMENT: getApiPath("comments/report/activate"),
+  // //REPORT ACCOUNT
+  GET_REPORTED_LIST: getApiPath("report/"),  
+  GET_REPORTED_DETAIL: getApiPath("report/{report_id}"),  
+  ACIVATE_REPORTED: getApiPath("report/activate/"), 
+  HANDLE_REPORTED: getApiPath("report/handle_report/"), 
+  DELETE_REPORTED: getApiPath("report/"), 
 
   //ADS TRANSACTIONS
   GET_ADS_TRANSACTION_LIST: getApiPath("advertise/admin"),
