@@ -11,7 +11,7 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [query, setQuery] = useState<ReportPostListRequestModel>({
-    report_type: 1, 
+    report_type: 1,
     page: 1,
     limit: 10,
     from_date: dayjs().startOf('month').format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -69,7 +69,7 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   const getReportDetail = async (params: ReportPostDetailRequestModel) => {
     try {
       setDetailLoading(true);
-      const res = await repo.getPostDetail({ report_type: 1, report_id: params.report_id });
+      const res = await repo.getPostDetail({ report_type: 1, report_id: params.report_id});
       setDetail(res?.data ?? undefined);
     } catch (error) {
       console.error(error);
@@ -85,7 +85,7 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   const deleteReport = async (params: ReportPostDetailRequestModel) => {
     try {
       setDeleteLoading(true);
-      const res = await repo.deletePostReport({ report_type: 1, report_id: params.report_id });
+      const res = await repo.deletePostReport({ report_type: 1, report_id: params.report_id});
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -108,7 +108,7 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   const acceptReport = async (params: ReportPostDetailRequestModel) => {
     try {
       setAcceptLoading(true);
-      const res = await repo.acceptPostReport({ report_type: 1, report_id: params.report_id });
+      const res = await repo.acceptPostReport({ report_type: 1, report_id: params.report_id});
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -128,10 +128,14 @@ const ReportPostViewModel = (repo: IReportRepo) => {
     }
   };
 
-  const activateReport = async (params: ReportPostDetailRequestModel) => {
+  const activateReport = async (params: ReportPostListResponseModel) => {
     try {
       setActiveLoading(true);
-      const res = await repo.activatePostReport({ report_type: 1, report_id: params.report_id });
+      const request: ReportPostDetailRequestModel = {
+        report_type: 1,  
+        report_id: params.report_id ?? '', 
+      };
+      const res = await repo.activatePostReport(request);
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
@@ -156,10 +160,10 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   }, [query]);
 
   useEffect(() => {
-    if (detailModal && selectedRecord?.report_id) {
+    if (detailModal && selectedRecord?.report_id && selectedRecord?.user_id) {
       getReportDetail({
         report_type: 1,
-        report_id: selectedRecord.report_id,
+        report_id: selectedRecord.report_id, 
       });
     }
   }, [detailModal, selectedRecord]);

@@ -63,7 +63,7 @@ class ReportRepo implements IReportRepo {
   }
 
   // Post
-  async getPostList(params: ReportPostListRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel[]>> {
+  async getPostList(): Promise<BaseApiResponseModel<ReportPostListResponseModel[]>> {
     return client.get(`${ApiPath.GET_REPORTED_LIST}?report_type=1`);
   }
 
