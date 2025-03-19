@@ -60,8 +60,8 @@ export interface ReportPostListRequestModel {
 }
 
 export interface ReportPostDetailRequestModel {
-  report_type: 1; 
-  report_id?: string;
+  report_type: Number; 
+  report_id: string; 
 }
 
 export interface ReportPostListResponseModel {

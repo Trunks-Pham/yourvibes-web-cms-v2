@@ -12,6 +12,7 @@ import {
   ReportPostListRequestModel,
   ReportPostListResponseModel
 } from "@/api/features/report/model/ReportModel";
+import { report } from "process";
 
 export interface IReportRepo {
   // Account
@@ -54,16 +55,16 @@ class ReportRepo implements IReportRepo {
 
   async acceptAccountReport(params: ReportAccountDetailRequestModel): Promise<BaseApiResponseModel<ReportAccountListResponseModel>> {
     const path = `${ApiPath.HANDLE_REPORTED}${params.report_id}`;
-    return client.patch(path);
+    return client.patch(path, { report_type: 0 });
   }
 
   async activateAccountReport(params: ReportAccountDetailRequestModel): Promise<BaseApiResponseModel<ReportAccountListResponseModel>> {
     const path = `${ApiPath.ACIVATE_REPORTED}${params.report_id}`;
-    return client.patch(path);
+    return client.patch(path, { report_type: 0 });
   }
 
   // Post
-  async getPostList(params: ReportPostListRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel[]>> {
+  async getPostList(): Promise<BaseApiResponseModel<ReportPostListResponseModel[]>> {
     return client.get(`${ApiPath.GET_REPORTED_LIST}?report_type=1`);
   }
 
@@ -79,12 +80,12 @@ class ReportRepo implements IReportRepo {
 
   async acceptPostReport(params: ReportPostDetailRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel>> {
     const path = `${ApiPath.HANDLE_REPORTED}${params.report_id}`;
-    return client.patch(path);
+    return client.patch(path, { report_type: 1 });
   }
 
   async activatePostReport(params: ReportPostDetailRequestModel): Promise<BaseApiResponseModel<ReportPostListResponseModel>> {
     const path = `${ApiPath.ACIVATE_REPORTED}${params.report_id}`;
-    return client.patch(path);
+    return client.patch(path, { report_type: 1 });
   }
 
   // Comment
@@ -104,12 +105,12 @@ class ReportRepo implements IReportRepo {
 
   async acceptCommentReport(params: ReportCommentDetailRequestModel): Promise<BaseApiResponseModel<ReportCommentListResponseModel>> {
     const path = `${ApiPath.HANDLE_REPORTED}${params.report_id}`;
-    return client.patch(path);
+    return client.patch(path, { report_type: 2 });
   }
 
   async activateCommentReport(params: ReportCommentDetailRequestModel): Promise<BaseApiResponseModel<ReportCommentListResponseModel>> {
     const path = `${ApiPath.ACIVATE_REPORTED}${params.report_id}`;
-    return client.patch(path);
+    return client.patch(path, { report_type: 2 });
   }
 
 }
