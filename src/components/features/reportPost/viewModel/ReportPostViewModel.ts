@@ -16,6 +16,7 @@ const ReportPostViewModel = (repo: IReportRepo) => {
     limit: 10,
     from_date: dayjs().startOf('month').format('YYYY-MM-DDTHH:mm:ss[Z]'),
     to_date: dayjs().endOf('month').format('YYYY-MM-DDTHH:mm:ss[Z]'),
+    status: undefined, 
   });
   const [reportedList, setReportedList] = useState<ReportPostListResponseModel[]>([]);
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
@@ -29,11 +30,13 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   const getReportedPosts = async (queryParams: ReportPostListRequestModel) => {
     try {
       setIsLoading(true);
+      console.log("Query Params trong ViewModel:", queryParams);
       const res = await repo.getPostList({
         ...queryParams,
         is_descending: true,
         sort_by: 'created_at',
       });
+      console.log("API Response:", res);
       if (res?.data) {
         setReportedList(res.data);
         setTotal(res.paging?.total ?? 0);
@@ -67,9 +70,16 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   };
 
   const getReportDetail = async (params: ReportPostDetailRequestModel) => {
+    if (!params.report_id) {
+      setResultObject({
+        type: 'error',
+        message: "Không tìm thấy ID báo cáo!",
+      });
+      return;
+    }
     try {
       setDetailLoading(true);
-      const res = await repo.getPostDetail({ report_type: 1, report_id: params.report_id});
+      const res = await repo.getPostDetail({ report_type: 1, report_id: params.report_id });
       setDetail(res?.data ?? undefined);
     } catch (error) {
       console.error(error);
@@ -83,13 +93,20 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   };
 
   const deleteReport = async (params: ReportPostDetailRequestModel) => {
+    if (!params.report_id) {
+      setResultObject({
+        type: 'error',
+        message: "Không tìm thấy ID báo cáo!",
+      });
+      return;
+    }
     try {
       setDeleteLoading(true);
-      const res = await repo.deletePostReport({ report_type: 1, report_id: params.report_id});
+      const res = await repo.deletePostReport({ report_type: 1, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
-          message: "Đã từ chối thành công!",
+          message: "Đã từ chối báo cáo thành công!",
         });
         await getReportedPosts({ ...query, page: 1 });
         setDetailModal(false);
@@ -106,13 +123,20 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   };
 
   const acceptReport = async (params: ReportPostDetailRequestModel) => {
+    if (!params.report_id) {
+      setResultObject({
+        type: 'error',
+        message: "Không tìm thấy ID báo cáo!",
+      });
+      return;
+    }
     try {
       setAcceptLoading(true);
-      const res = await repo.acceptPostReport({ report_type: 1, report_id: params.report_id});
+      const res = await repo.acceptPostReport({ report_type: 1, report_id: params.report_id });
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
-          message: "Đã chấp nhận thành công!",
+          message: "Đã chấp nhận báo cáo thành công!",
         });
         await getReportedPosts({ ...query, page: 1 });
         setDetailModal(false);
@@ -129,17 +153,24 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   };
 
   const activateReport = async (params: ReportPostListResponseModel) => {
+    if (!params.report_id) {
+      setResultObject({
+        type: 'error',
+        message: "Không tìm thấy ID báo cáo!",
+      });
+      return;
+    }
     try {
       setActiveLoading(true);
       const request: ReportPostDetailRequestModel = {
-        report_type: 1,  
-        report_id: params.report_id ?? '', 
+        report_type: 1,
+        report_id: params.report_id,
       };
       const res = await repo.activatePostReport(request);
       if (res?.message === 'Success') {
         setResultObject({
           type: 'success',
-          message: "Đã kích hoạt lại bài viết!",
+          message: "Đã kích hoạt lại bài viết thành công!",
         });
         await getReportedPosts({ ...query, page: 1 });
         setDetailModal(false);
@@ -160,10 +191,10 @@ const ReportPostViewModel = (repo: IReportRepo) => {
   }, [query]);
 
   useEffect(() => {
-    if (detailModal && selectedRecord?.report_id && selectedRecord?.user_id) {
+    if (detailModal && selectedRecord?.report_id) {
       getReportDetail({
         report_type: 1,
-        report_id: selectedRecord.report_id, 
+        report_id: selectedRecord.report_id,
       });
     }
   }, [detailModal, selectedRecord]);

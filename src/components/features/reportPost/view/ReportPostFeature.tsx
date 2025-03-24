@@ -14,6 +14,8 @@ import ReportPostDetailModal from './ReportPostDetailModal';
 const ReportPostFeature = () => {
   const { green } = useColor();
   const { message } = App.useApp();
+  const [form] = Form.useForm();
+
   const {
     handleTableChange,
     isLoading,
@@ -37,10 +39,17 @@ const ReportPostFeature = () => {
   } = ReportPostViewModel(defaultReportRepo);
 
   const statusConst = [
-    { label: "Tất cả", value: "", color: "" },
+    { label: "Tất cả", value: "all", color: "" },
     { label: "Đã xử lý", value: true, color: green },
     { label: "Chưa xử lý", value: false, color: "red" },
   ];
+
+  useEffect(() => {
+    form.setFieldsValue({
+      status: "all", // Giá trị mặc định là "all"
+      date: [dayjs().startOf('month'), dayjs().endOf('month')],
+    });
+  }, [form]);
 
   useEffect(() => {
     messageDisplay(resultObject, message);
@@ -50,24 +59,32 @@ const ReportPostFeature = () => {
     <CardFeature title="Báo cáo bài viết">
       <>
         <Form
+          form={form}
           layout="vertical"
           className="w-full"
           onFinish={(values) => {
-            setQuery({
-              report_type: 1,  
-              status: values?.status !== "" ? values?.status : undefined,
+            const query: any = {
+              report_type: 1,
               from_date: dayjs(values?.date[0]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
               to_date: dayjs(values.date[1]).format('YYYY-MM-DDTHH:mm:ss[Z]'),
               user_email: values?.user_email || undefined,
               admin_email: values?.admin_email || undefined,
               page: 1,
               limit: 10,
-            });
+            };
+
+            // Chỉ thêm status nếu không phải "all"
+            if (values?.status !== "all") {
+              query.status = values.status;
+            }
+
+            console.log("Query gửi đi:", query);
+            setQuery(() => query);
           }}
         >
           <Row gutter={16}>
             <Col xs={24} xl={6}>
-              <Form.Item label={<span className="font-bold">Trạng thái</span>} name="status" initialValue="">
+              <Form.Item label={<span className="font-bold">Trạng thái</span>} name="status">
                 <Select
                   placeholder="Trạng thái"
                   options={statusConst.map((item) => ({ label: item.label, value: item.value }))}
@@ -89,7 +106,6 @@ const ReportPostFeature = () => {
                 <Form.Item
                   label={<span className="font-bold">Thời gian</span>}
                   name="date"
-                  initialValue={[dayjs().startOf('month'), dayjs().endOf('month')]}
                 >
                   <DatePicker.RangePicker style={{ width: '100%' }} format="DD/MM/YYYY" allowClear={false} />
                 </Form.Item>
@@ -114,8 +130,9 @@ const ReportPostFeature = () => {
             },
             {
               title: "Email báo cáo",
-              dataIndex: ["user", "email"],  
+              dataIndex: "user_email",
               align: "center",
+              render: (email: string) => email || "N/A",
             },
             {
               title: "Trạng thái",
@@ -128,19 +145,21 @@ const ReportPostFeature = () => {
             },
             {
               title: "Admin",
-              dataIndex: ["admin", "email"],
+              dataIndex: "admin_email",
               align: "center",
+              render: (email: string) => email || "N/A",
             },
             {
               title: "ID bài viết bị báo cáo",
               dataIndex: "reported_post_id",
               align: "center",
+              render: (id: string) => id || "N/A",
             },
             {
               title: "Thời gian",
               dataIndex: "created_at",
               align: "center",
-              render: (time: string) => dayjs(time).format("DD/MM/YYYY HH:mm:ss"),
+              render: (time: string) => (time ? dayjs(time).format("DD/MM/YYYY HH:mm:ss") : "N/A"),
             },
             {
               title: "Chi tiết",
@@ -160,7 +179,7 @@ const ReportPostFeature = () => {
             },
           ]}
           dataSource={reportedList}
-          rowKey={(record) => record.report_id ?? `${record.reported_post_id || record.created_at}`}  
+          rowKey={(record) => record.report_id ?? `${record.reported_post_id || record.created_at}`}
           pagination={{
             showSizeChanger: true,
             pageSizeOptions: [10, 20, 50, 100],

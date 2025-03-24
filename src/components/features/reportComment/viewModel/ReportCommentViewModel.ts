@@ -11,7 +11,7 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [query, setQuery] = useState<ReportCommentListRequestModel>({
-    report_type: 2,  
+    report_type: 2,
     page: 1,
     limit: 10,
     from_date: dayjs().startOf('month').format('YYYY-MM-DDTHH:mm:ss[Z]'),
@@ -35,7 +35,7 @@ const ReportCommentViewModel = (repo: IReportRepo) => {
         sort_by: 'created_at',
       });
       if (res?.data) {
-        setReportedList(res.data);
+        setReportedList(res.data); // Dữ liệu đã có user_email, admin_email, reported_comment_id
         setTotal(res.paging?.total ?? 0);
         setLimit(res.paging?.limit ?? 10);
         setPage(res.paging?.page ?? 1);

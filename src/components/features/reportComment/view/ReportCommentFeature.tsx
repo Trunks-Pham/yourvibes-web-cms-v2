@@ -113,7 +113,7 @@ const ReportCommentFeature = () => {
           },
           {
             title: "Email báo cáo",
-            dataIndex: ["user", "email"],
+            dataIndex: "user_email", // Mapping trực tiếp từ user_email
             align: "center",
           },
           {
@@ -127,12 +127,13 @@ const ReportCommentFeature = () => {
           },
           {
             title: "Admin",
-            dataIndex: ["admin", "email"],
+            dataIndex: "admin_email", // Mapping trực tiếp từ admin_email
             align: "center",
+            render: (value: string | null) => value || "Chưa có", // Hiển thị "Chưa có" nếu null
           },
           {
             title: "ID bình luận bị báo cáo",
-            dataIndex: "reported_comment_id",
+            dataIndex: "reported_comment_id", // Mapping trực tiếp từ reported_comment_id
             align: "center",
           },
           {
@@ -159,7 +160,7 @@ const ReportCommentFeature = () => {
           },
         ]}
         dataSource={reportedList}
-        rowKey={(record) => record.report_id ?? `${record.reported_comment_id || record.created_at}`}
+        rowKey={(record) => record.report_id || ""}
         pagination={{
           showSizeChanger: true,
           pageSizeOptions: [10, 20, 50, 100],
