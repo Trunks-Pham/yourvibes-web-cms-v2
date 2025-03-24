@@ -35,7 +35,7 @@ const ReportAccountViewModel = (repo: IReportRepo) => {
         sort_by: 'created_at',
       });
       if (res?.data) {
-        setReportedList(res.data);
+        setReportedList(res.data); // Dữ liệu đã có reported_user_email, user_email, admin_email
         setTotal(res.paging?.total ?? 0);
         setLimit(res.paging?.limit ?? 10);
         setPage(res.paging?.page ?? 1);

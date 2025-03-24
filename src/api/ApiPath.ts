@@ -12,7 +12,7 @@ export const ApiPath = {
   UPDATE_ADMIN: getApiPath("admins/super_admin"),
   RESET_PASSWORD: getApiPath("admins/super_admin/forgot_admin_password"),
 
-  // //REPORT ACCOUNT
+  //REPORT
   GET_REPORTED_LIST: getApiPath("report/"),  
   GET_REPORTED_DETAIL: getApiPath("report/{report_id}"),  
   ACIVATE_REPORTED: getApiPath("report/activate/"), 

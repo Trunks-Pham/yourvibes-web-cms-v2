@@ -114,7 +114,7 @@ const ReportAccountFeature = () => {
             },
             {
               title: "Tài khoản bị báo cáo",
-              dataIndex: ["reported_user", "email"],
+              dataIndex: "reported_user_email", // Mapping trực tiếp từ reported_user_email
               align: "center",
             },
             {
@@ -128,13 +128,14 @@ const ReportAccountFeature = () => {
             },
             {
               title: "Tài khoản báo cáo",
-              dataIndex: ["user", "email"],
+              dataIndex: "user_email", // Mapping trực tiếp từ user_email
               align: "center",
             },
             {
               title: "Admin",
-              dataIndex: ["admin", "email"],
+              dataIndex: "admin_email", // Mapping trực tiếp từ admin_email
               align: "center",
+              render: (value: string | null) => value || "Chưa có", // Hiển thị "Chưa có" nếu admin_email là null
             },
             {
               title: "Thời gian",
@@ -161,7 +162,7 @@ const ReportAccountFeature = () => {
           ]}
           dataSource={reportedList}
           onChange={handleTableChange}
-          rowKey={(record) => record.report_id ?? `${record.reported_user_id || record.created_at}`} 
+          rowKey={(record) => record.report_id || 'default-key'}
           pagination={{
             current: page,
             pageSize: limit,
