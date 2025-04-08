@@ -78,7 +78,12 @@ const LoginViewModel = (repo: AuthenRepo) => {
       }
     } catch (error: any) {
       // Xử lý lỗi chi tiết từ interceptor
-      if (error?.status === 401) {
+      if (error?.status === 400) {
+        setResultObject({
+          type: "error",
+          message: error.message || "Yêu cầu không hợp lệ.",
+        });
+      } else if (error?.status === 401) {
         setResultObject({
           type: "error",
           message: "Email hoặc mật khẩu không đúng!",

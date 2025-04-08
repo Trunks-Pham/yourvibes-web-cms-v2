@@ -114,7 +114,7 @@ api.interceptors.request.use(
   },
   (error) => {
     console.error("Request error:", error);
-    return Promise.reject(error); // Thêm return
+    return Promise.reject(error);
   }
 );
 
@@ -126,34 +126,43 @@ api.interceptors.response.use(
   (error) => {
     console.error(error);
     const status = error?.response?.status;
-    const url = error?.response?.config?.url; // Lấy URL của request
+    const url = error?.response?.config?.url;
     const hasToken = !!localStorage.getItem("accesstoken");
+    const errorMessage = error?.response?.data?.error?.message; // Lấy message từ response
 
     // Xử lý khi đang ở màn hình login (request tới /login)
     if (url?.includes("/login")) {
-      if (status === 403) {
-        // Tài khoản bị chặn khi đăng nhập
+      if (status === 400) {
         return Promise.reject({
-          message: "Tài khoản của bạn đã bị chặn bởi Admin.",
-          status: 403,
+          message: errorMessage || "Yêu cầu không hợp lệ.",
+          status: 400,
         });
       } else if (status === 401) {
-        // Thông tin đăng nhập sai
         return Promise.reject({
           message: "Thông tin đăng nhập không đúng.",
           status: 401,
         });
+      } else if (status === 403) {
+        return Promise.reject({
+          message: "Tài khoản của bạn đã bị chặn bởi Admin.",
+          status: 403,
+        });
       }
-      return Promise.reject(error); // Các lỗi khác
+      return Promise.reject(error);
     }
 
     // Xử lý khi đã đăng nhập (có token) nhưng gặp lỗi
     if (hasToken) {
-      if (status === 401) {
+      if (status === 400) {
+        localStorage.clear();
+        alert(errorMessage || "Yêu cầu không hợp lệ. Vui lòng đăng nhập lại.");
+        window.location.href = "/login";
+        return Promise.reject(error);
+      } else if (status === 401) {
         localStorage.clear();
         alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
         window.location.href = "/login";
-        return Promise.reject(error); // Trả lỗi để không xử lý tiếp
+        return Promise.reject(error);
       } else if (status === 403) {
         localStorage.clear();
         alert("Tài khoản của bạn đã bị chặn bởi Admin.");
@@ -162,7 +171,6 @@ api.interceptors.response.use(
       }
     }
 
-    // Các lỗi khác không xử lý ở đây
     return Promise.reject(error);
   }
 );
