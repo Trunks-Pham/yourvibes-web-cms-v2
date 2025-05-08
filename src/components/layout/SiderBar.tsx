@@ -10,7 +10,7 @@ import { BsFilePostFill } from 'react-icons/bs';
 import { FaHistory, FaHome, FaInfoCircle, FaLock } from 'react-icons/fa';
 import { IoIosPricetags } from 'react-icons/io';
 import { MdAdminPanelSettings, MdInsertComment, MdReport, MdSwitchAccount } from 'react-icons/md';
-import { RiUserSettingsFill } from 'react-icons/ri';
+import { RiTestTubeFill, RiTestTubeLine, RiUserSettingsFill } from 'react-icons/ri';
 import yourvibesLogo from '@/global/images/yourvibes.png'
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -61,6 +61,11 @@ const SiderBar = () => {
         { key: '/account/change-password', label: 'Đổi mật khẩu', icon: <FaLock /> },
         { key: 'logout', label: 'Đăng xuất', icon: <BiSolidLogOut /> },
       ],
+    },
+    {
+      key:'/test',
+      label: 'Test',
+      icon: <RiTestTubeLine />,
     },
   ];
 
