@@ -14,8 +14,7 @@ const TestViewModel = (repo: ITestRepo) => {
   ) => {
     try {
       setIsLoading(true);
-      const res = await fn();
-      console.log("Response:", res);
+      const res = await fn(); 
 
       if (typeof res === "object" && res !== null && "code" in res) {
         if (res.code >= 20000 && res.code < 30000) {
@@ -29,15 +28,13 @@ const TestViewModel = (repo: ITestRepo) => {
             message: res.message || errorMsg,
           });
         }
-      } else {
-        console.error("Unexpected response format:", res);
+      } else { 
         setResultObject({
           type: "error",
           message: errorMsg,
         });
       }
-    } catch (err) {
-      console.error("Error in handle:", err);
+    } catch (err) { 
       setResultObject({
         type: "error",
         message: errorMsg,
