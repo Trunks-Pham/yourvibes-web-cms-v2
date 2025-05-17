@@ -134,14 +134,14 @@ const TestFeature = () => {
 
           <Input
             placeholder="Post ID (optional)"
-            value={postId}
+            value={postId || ""}
             onChange={(e) => setPostId(e.target.value)}
           />
 
           <Input
             placeholder="Number of users (optional)"
             type="number"
-            value={numUsers}
+            value={numUsers || ""}
             onChange={(e) => setNumUsers(e.target.value)}
           />
 
