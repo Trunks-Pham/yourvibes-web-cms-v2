@@ -14,7 +14,7 @@ The YourVibes ecosystem consists of several components working together to deliv
    - **Mobile App** ([yourvibes_app_V2](https://github.com/Thanh-Phuog/yourvibes_app_V2.git)): Built with React Native for mobile app users.
    - **Web App** ([yourvibes-web-client-v2](https://github.com/Trunks-Pham/yourvibes-web-client-v2.git)): Built with React for web app users.
    - **CMS for Admin** ([yourvibes-web-cms-v2](https://github.com/Trunks-Pham/yourvibes-web-cms-v2.git)): Built with React for admin management.
-
+   - **Backend Golang** ([yourvibes-web-cms-v2](https://github.com/poin4003/yourVibes_GoApi.git)): Backend with Golang.
 The ecosystem architecture is illustrated below:
 
 ![Ecosystem Architecture](https://github.com/poin4003/images/blob/master/yourvibes_architect_design.png?raw=true)
